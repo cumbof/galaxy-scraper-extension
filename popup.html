@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- Download Selected Links sample customization for Galaxy -->
+<!-- https://developer.chrome.com/extensions/samples -->
+<html>
+  <head>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    <input type="text" id="galaxy" placeholder="Galaxy URL"></br>
+    <input type="text" id="user" placeholder="Your Galaxy Username"></br>
+    <input type="password" id="password" placeholder="Your Galaxy Password"></br>
+    </br>
+    <input type="text" id="filter" placeholder="Filter">
+    <input type="checkbox" id="regex">
+    <label for="regex">Regex</label></br>
+    </br>
+    <button id="send0">Send Data</button>
+    <table id="links">
+      <tr>
+        <th><input type="checkbox" checked id="toggle_all"></th>
+        <th align="left">Select All</th>
+      </tr>
+    </table>
+    <button id="send1">Send Data</button>
+  </body>
+</html>
