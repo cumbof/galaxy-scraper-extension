@@ -8,7 +8,7 @@ You can do it in two ways:
 2. copy the links to your data (one by one) and let Galaxy retrieve them for you.
 
 ### Problem
-The solution number 2 is definitely better than the number 1 because you do not have to download any data, but if you want to import a lot of data in your Galaxy history, the solution number 2 could take a lot of time to be achieved.
+The solution number 2 is definitely better than the number 1 because you do not have to download any data, but if you want to import a lot of data in your Galaxy history, it could take a lot of time to be achieved.
 
 ### Solution
 This Chrome extension makes you able to search for every links on the current web page (containing the links to the data that you want to import in Galaxy), filter these links (also using regular expressions), and send them to Galaxy by specifying the address in which Galaxy is running, your username, and password.
