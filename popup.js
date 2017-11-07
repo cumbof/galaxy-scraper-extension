@@ -103,6 +103,10 @@ function sendToGalaxy() {
   console.log("galaxy_user: "+galaxy_user);
   var galaxy_pass = document.getElementById('password').value;
   console.log("galaxy_pass: "+galaxy_pass);
+  var collection_name = undefined;
+  if ((document.getElementById('collection_name').value).trim() !== "")
+    collection_name = document.getElementById('collection_name').value;
+  console.log("collection_name: "+collection_name);
 
   if (countSelectedLinks(visibleLinks) > 0) {
     checkedLinks = [];
@@ -115,23 +119,40 @@ function sendToGalaxy() {
 
     chrome.runtime.getBackgroundPage( 
       function (backgroundPage) { 
-        backgroundPage.sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks); 
+        backgroundPage.sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name); 
       } 
     );
   }
   else console.log("Select at least one link.");
   
-  window.close();
+  //window.close();
 }
 
-// Set up event handlers and inject send_links.js into all frames in the active
-// tab.
+function collectionHandler() {
+  var collection_bool = $("input[name=collection]:checked").val();
+  console.log(collection_bool);
+  if (collection_bool == "true") {
+    console.log("collection activated");
+    $("#collection_name").prop("disabled", false);
+    $("#collection_status").text("[enabled]");
+  }
+  else if (collection_bool == "false") {
+    console.log("collection disabled");
+    $("#collection_name").prop("disabled", true);
+    $("#collection_status").text("[disabled]");
+  }
+}
+
+// Set up event handlers and inject send_links.js into all frames in the active tab.
 window.onload = function() {
   document.getElementById('filter').onkeyup = filterLinks;
   document.getElementById('regex').onchange = filterLinks;
   document.getElementById('toggle_all').onchange = toggleAll;
   document.getElementById('send0').onclick = sendToGalaxy;
   document.getElementById('send1').onclick = sendToGalaxy;
+  //document.getElementsByName('collection').onclick = collectionHandler;
+  document.getElementById('coll_false').onclick = collectionHandler;
+  document.getElementById('coll_true').onclick = collectionHandler;
 
   chrome.windows.getCurrent(function (currentWindow) {
     chrome.tabs.query({active: true, windowId: currentWindow.id}, function(activeTabs) {
