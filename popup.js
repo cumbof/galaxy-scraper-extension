@@ -42,115 +42,6 @@ function toggleAll() {
   }
 }
 
-function countSelectedLinks(visibleLinks) {
-  var count = 0;
-  for (var i = 0; i < visibleLinks.length; ++i) {
-    if (document.getElementById('check' + i).checked) {
-      count++;
-    }
-  }
-  return count;
-}
-
-// Send selected data to Galaxy.
-function sendToGalaxy() {
-  var galaxy_url = document.getElementById('galaxy').value;
-  var galaxy_user = document.getElementById('user').value;
-  var galaxy_pass = document.getElementById('password').value;
-
-  if (countSelectedLinks(visibleLinks) > 0) {
-    // retrieve api key
-    var api_key = retrieveApiKey(galaxy_url, galaxy_user, galaxy_pass);
-    console.log("api_key: "+api_key);
-    if (api_key !== undefined) {
-      // get current history id
-      var history_id = getCurrentHistoryId(galaxy_url);
-      console.log("history_id: "+history_id);
-      if (history_id !== undefined) {
-        for (var i = 0; i < visibleLinks.length; ++i) {
-          if (document.getElementById('check' + i).checked) {
-            // send data to galaxy
-            var file_url = visibleLinks[i];
-            console.log("file_url: "+file_url);
-            var file_name = file_url.split("/").pop();
-            var file_type = "auto";
-            var dbkey = "?";
-            uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_type, dbkey);
-          }
-        }
-      }
-      else console.log("Unable to retrieve the current history id.");
-    }
-    else console.log("Unable to retrieve api key.");
-  }
-  else console.log("Select at least one link.");
-  
-  window.close();
-}
-
-function getCurrentHistoryId(galaxy_url) {
-  var path = "api/histories/most_recently_used";
-  if (!galaxy_url.endsWith("/"))
-    path = "/"+path;
-  var upload_url = galaxy_url+path;
-
-  $.ajax({
-    url: upload_url,
-    type: 'get',
-    dataType: 'json',
-    contentType: 'application/json',
-    success: function( data, textStatus, jQxhr ){
-      return data["id"];
-    },
-    error: function( jqXhr, textStatus, errorThrown ){
-      return undefined;
-    }
-  });
-}
-
-function uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_type, dbkey) {
-  var path = "api/tools";
-  if (!galaxy_url.endsWith("/"))
-    path = "/"+path;
-  var upload_url = galaxy_url+path;
-  
-  $.ajax({
-    url: upload_url,
-    type: 'post',
-    dataType: 'json',
-    contentType: 'application/json',
-    data: JSON.stringify( { "key": api_key, "tool_id": "upload1", "history_id": history_id } ),
-    files: JSON.stringify( { "files_0|NAME": file_name, "files_0|type": "upload_dataset", "files_0|file_url": file_url, "dbkey": dbkey, "file_type": file_type, "ajax_upload": "true" } ),
-    success: function( data, textStatus, jQxhr ){
-      return data;
-    },
-    error: function( jqXhr, textStatus, errorThrown ){
-      return undefined;
-    }
-  });
-}
-
-function retrieveApiKey(galaxy_url, galaxy_user, galaxy_pass) {
-  var path = "api/authenticate/baseauth";
-  if (!galaxy_url.endsWith("/"))
-    path = "/"+path;
-  var auth_url = galaxy_url+path;
-
-  $.ajax({
-    url: auth_url,
-    type: 'post',
-    dataType: 'json',
-    contentType: 'application/json',
-    data: JSON.stringify( { "user": galaxy_user, "password": galaxy_pass } ),
-    success: function( data, textStatus, jQxhr ){
-      return data['api_key'];
-    },
-    error: function( jqXhr, textStatus, errorThrown ){
-      return undefined;
-    }
-  });
-}
-
 // Re-filter allLinks into visibleLinks and reshow visibleLinks.
 function filterLinks() {
   var filterValue = document.getElementById('filter').value;
@@ -194,6 +85,44 @@ chrome.extension.onRequest.addListener(function(links) {
   visibleLinks = allLinks;
   showLinks();
 });
+
+function countSelectedLinks(visibleLinks) {
+  var count = 0;
+  for (var i = 0; i < visibleLinks.length; ++i) {
+      if (document.getElementById('check' + i).checked) {
+      count++;
+      }
+  }
+  return count;
+}
+
+function sendToGalaxy() {
+  var galaxy_url = document.getElementById('galaxy').value;
+  console.log("galaxy_url: "+galaxy_url);
+  var galaxy_user = document.getElementById('user').value;
+  console.log("galaxy_user: "+galaxy_user);
+  var galaxy_pass = document.getElementById('password').value;
+  console.log("galaxy_pass: "+galaxy_pass);
+
+  if (countSelectedLinks(visibleLinks) > 0) {
+    checkedLinks = [];
+    for (var i = 0; i < visibleLinks.length; ++i) {
+      if (document.getElementById('check' + i).checked) {
+        //console.log(visibleLinks[i]);
+        checkedLinks.push(visibleLinks[i]);
+      }
+    }
+
+    chrome.runtime.getBackgroundPage( 
+      function (backgroundPage) { 
+        backgroundPage.sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks); 
+      } 
+    );
+  }
+  else console.log("Select at least one link.");
+  
+  window.close();
+}
 
 // Set up event handlers and inject send_links.js into all frames in the active
 // tab.
