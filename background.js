@@ -1,3 +1,5 @@
+// http://bioblend.readthedocs.io/en/latest/api_docs/galaxy/all.html
+
 // Send selected data to Galaxy.
 function sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name) {
     // start by retrieving the api key for the selected user
