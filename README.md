@@ -2,8 +2,7 @@
 Chrome extension that exploits the Galaxy APIs to automatically send data to the current history of your Galaxy instance.
 
 ### Scenario
-You want to import in your galaxy history a set of public available data.
-You can do it in two ways:
+If you want to import in your galaxy history a set of public available data, you can do it in two different ways:
 1. download these data on your local computer and then upload all of them on your Galaxy instance;
 2. copy the links to your data (one by one) and let Galaxy retrieve them for you.
 
