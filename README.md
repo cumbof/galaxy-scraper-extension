@@ -15,6 +15,6 @@ This Chrome extension makes you able to search for every links on the current we
 
 > ![Galaxy Data Retrieval Extension](https://raw.githubusercontent.com/fabio-cumbo/galaxy-data-retrieval-extension/master/img/gdre-screenshot.png "Galaxy Data Retrieval Extension")
 
-**NOTES:** it is worth noting that you must have an account on the specified Galaxy instance, and a valid *API Key*. As reported on the official [Galaxy API documentation](https://galaxyproject.org/develop/api/): 
+**NOTES:** it is worth noting that you must have an account on the specified Galaxy instance, and a valid *API Key*. As reported on the official [Galaxy API Documentation](https://galaxyproject.org/develop/api/): 
 
 ```To use the API, you must first generate an API Key for the account you want to access Galaxy from. Please note that this key acts as an alternate means to access your account, and should be treated with the same care as your login password. You can do so in the UI under user preferences (while logged in).```
