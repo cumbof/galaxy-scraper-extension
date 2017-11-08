@@ -83,7 +83,7 @@ function getCurrentHistoryId(galaxy_url, api_key, checkedLinks, collection_name)
             var history_id = data["id"];
             _HISTORY_ID_ = history_id;
             //return data["id"];
-            for (var i = 0; i < checkedLinks.length; ++i) {
+            for (var i=0; i<checkedLinks.length; i++) {
                 // send data to galaxy
                 var file_url = checkedLinks[i];
                 console.log("file_url: "+file_url);
@@ -170,6 +170,7 @@ function createCollection(galaxy_url, history_id, collection_name, file_ids) {
             ),
             success: function( data, textStatus, jQxhr ){
                 console.log(data);
+                // TO-DO: hide datasets outside the collection
                 return data;
             },
             error: function( jqXhr, textStatus, errorThrown ){

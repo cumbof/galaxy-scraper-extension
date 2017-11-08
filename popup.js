@@ -86,14 +86,14 @@ chrome.extension.onRequest.addListener(function(links) {
   showLinks();
 });
 
-function countSelectedLinks(visibleLinks) {
-  var count = 0;
-  for (var i = 0; i < visibleLinks.length; ++i) {
+function getSelectedLinks(visibleLinks) {
+  var checkedLinks = [];
+  for (var i=0; i<visibleLinks.length; i++) {
       if (document.getElementById('check' + i).checked) {
-      count++;
+        checkedLinks.push(visibleLinks[i]);
       }
   }
-  return count;
+  return checkedLinks;
 }
 
 function sendToGalaxy() {
@@ -110,15 +110,8 @@ function sendToGalaxy() {
     collection_name = document.getElementById('collection_name').value;
   console.log("collection_name: "+collection_name);
 
-  if (countSelectedLinks(visibleLinks) > 0) {
-    checkedLinks = [];
-    for (var i = 0; i < visibleLinks.length; ++i) {
-      if (document.getElementById('check' + i).checked) {
-        //console.log(visibleLinks[i]);
-        checkedLinks.push(visibleLinks[i]);
-      }
-    }
-
+  var checkedLinks = getSelectedLinks(visibleLinks)
+  if (checkedLinks.length > 0) {
     chrome.runtime.getBackgroundPage( 
       function (backgroundPage) { 
         //backgroundPage.sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name);
