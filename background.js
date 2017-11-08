@@ -1,12 +1,44 @@
 // https://docs.galaxyproject.org/en/master/api/api.html
 // http://bioblend.readthedocs.io/en/latest/api_docs/galaxy/all.html
 
+/************************************************************************************/
+/** Observer Pattern */
+/************************************************************************************/
+var _GALAXY_URL_ = undefined;
+var _HISTORY_ID_ = undefined;
+var _COLLECTION_NAME_ = undefined;
+var _MAP_SIZE_ = undefined;
+
+var ObservableMap = function() {
+    this.map = {};
+}
+ObservableMap.prototype.put = function( key, value ) {
+    this.map[key] = value;
+    //console.log("ObservableMap size: "+Object.keys(this.map).length);
+    if (Object.keys(this.map).length === _MAP_SIZE_) {
+        if (_COLLECTION_NAME_ !== undefined)
+            createCollection(_GALAXY_URL_, _HISTORY_ID_, _COLLECTION_NAME_, this.map);
+    }
+}
+ObservableMap.prototype.setSize = function( size ) {
+    _MAP_SIZE_ = size;
+}
+
+var file_ids = new ObservableMap();
+/************************************************************************************/
+
 // Send selected data to Galaxy.
-function sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name) {
+//function sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name) {
+function sendToGalaxy(galaxy_url, api_key, checkedLinks, collection_name) {
+    _GALAXY_URL_ = galaxy_url;
+    _COLLECTION_NAME_ = collection_name;
+    // TO-DO remove invalid links in checkedLinks
+    file_ids.setSize(checkedLinks.length);
     // start by retrieving the api key for the selected user
     // then retrieve the current history id
     // finally send links to the upload tool
-    retrieveApiKey(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name);
+    //retrieveApiKey(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name);
+    getCurrentHistoryId(galaxy_url, api_key, checkedLinks, collection_name);
 }
 
 function retrieveApiKey(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name) {
@@ -49,7 +81,7 @@ function getCurrentHistoryId(galaxy_url, api_key, checkedLinks, collection_name)
             console.log(data);
             console.log("history_id: "+data["id"]);
             var history_id = data["id"];
-            var file_ids = {}
+            _HISTORY_ID_ = history_id;
             //return data["id"];
             for (var i = 0; i < checkedLinks.length; ++i) {
                 // send data to galaxy
@@ -58,12 +90,8 @@ function getCurrentHistoryId(galaxy_url, api_key, checkedLinks, collection_name)
                 var file_name = file_url.split("/").pop();
                 var file_type = "auto";
                 var dbkey = "?";
-                var file_id = uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_type, dbkey);
-                file_ids[file_id] = file_name;
+                uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_type, dbkey);
             }
-            // TO-DO:  uploadData is async: how to wait??
-            if (collection_name !== undefined)
-                createCollection(galaxy_url, history_id, collection_name, file_ids);
         },
         error: function( jqXhr, textStatus, errorThrown ){
             return undefined;
@@ -97,9 +125,13 @@ function uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_t
             } 
         ),
         success: function( data, textStatus, jQxhr ){
-            console.log(data);
+            //console.log(data);
             //return data;
-            return data["outputs"][0]["id"];
+            //return data["outputs"][0]["id"];
+            var file_id = data["outputs"][0]["id"];
+            //file_ids[file_id] = file_name;
+            file_ids.put(file_id, file_name);
+            //console.log("file_ids:"+Object.keys(file_ids).length);
         },
         error: function( jqXhr, textStatus, errorThrown ){
             return undefined;
@@ -108,7 +140,7 @@ function uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_t
 }
 
 function createCollection(galaxy_url, history_id, collection_name, file_ids) {
-    var path = "api/dataset_collections";
+    var path = "api/histories/"+history_id+"/contents";
     if (!galaxy_url.endsWith("/"))
         path = "/"+path;
     var collection_url = galaxy_url+path;
@@ -128,26 +160,21 @@ function createCollection(galaxy_url, history_id, collection_name, file_ids) {
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify( 
-                { 
-                    "history_id": history_id,
-                    "collection_description": {
-                        "collection_type": "list", 
-                        "name": collection_name, 
-                        "element_identifiers": element_identifiers
-                    }
-                } 
+            data: JSON.stringify(
+                {
+                    "type": "dataset_collection",
+                    "collection_type": "list",
+                    "name": collection_name,
+                    "element_identifiers": element_identifiers
+                }
             ),
             success: function( data, textStatus, jQxhr ){
                 console.log(data);
-                /*if (collection_name !== undefined) {
-                    file_id = data["outputs"][0]["id"];
-                    console.log("file_id: "+file_id);
-                }*/
-                //return data;
-                return data["outputs"][0]["id"];
+                return data;
             },
             error: function( jqXhr, textStatus, errorThrown ){
+                //console.log(textStatus);
+                //console.log(errorThrown);
                 return undefined;
             }
         });

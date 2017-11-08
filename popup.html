@@ -9,17 +9,19 @@
   <body>
     <h2>Galaxy Data Retrieval Extension</h2>
     <p>You need an account and a valid <b>API Key</b> on the selected galaxy instance to properly use this tool.</p></br>
-    <input type="text" id="galaxy" placeholder="Galaxy URL">
-    <input type="text" id="user" placeholder="Your Galaxy Username">
-    <input type="password" id="password" placeholder="Your Galaxy Password"></br>
+    <input type="text" id="galaxy" style="width:90%" placeholder="Galaxy URL"></br>
     </br>
-    <input type="text" id="filter" placeholder="Filter Data">
-    <input type="checkbox" id="regex">
-    <label for="regex">Regex</label></br>
+    <!--<input type="text" id="user" placeholder="Your Galaxy Username">
+    <input type="password" id="password" placeholder="Your Galaxy Password"></br>-->
+    <input type="text" id="api_key" style="width:90%" placeholder="API Key"></br>
     </br>
     <input type="radio" name="collection" id="coll_false" value="false" checked> Upload the selected data directly in your history</br>
     <input type="radio" name="collection" id="coll_true" value="true"> Upload the selected data in a Collection that will be created in your history</br>
     <input type="text" id="collection_name" placeholder="Collection Name" disabled> <b><label id="collection_status">[disabled]</label></b></br>
+    </br>
+    <input type="text" id="filter" placeholder="Filter Data">
+    <input type="checkbox" id="regex">
+    <label for="regex">Regex</label></br>
     </br>
     <button id="send0">Send Data</button>
     <table id="links">

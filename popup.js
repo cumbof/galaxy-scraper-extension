@@ -99,10 +99,12 @@ function countSelectedLinks(visibleLinks) {
 function sendToGalaxy() {
   var galaxy_url = document.getElementById('galaxy').value;
   console.log("galaxy_url: "+galaxy_url);
-  var galaxy_user = document.getElementById('user').value;
+  /*var galaxy_user = document.getElementById('user').value;
   console.log("galaxy_user: "+galaxy_user);
   var galaxy_pass = document.getElementById('password').value;
-  console.log("galaxy_pass: "+galaxy_pass);
+  console.log("galaxy_pass: "+galaxy_pass);*/
+  var api_key = document.getElementById('api_key').value;
+  console.log("api key: "+api_key);
   var collection_name = undefined;
   if ((document.getElementById('collection_name').value).trim() !== "")
     collection_name = document.getElementById('collection_name').value;
@@ -119,7 +121,8 @@ function sendToGalaxy() {
 
     chrome.runtime.getBackgroundPage( 
       function (backgroundPage) { 
-        backgroundPage.sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name); 
+        //backgroundPage.sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name);
+        backgroundPage.sendToGalaxy(galaxy_url, api_key, checkedLinks, collection_name);
       } 
     );
   }
