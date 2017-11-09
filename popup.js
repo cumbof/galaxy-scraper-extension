@@ -120,7 +120,6 @@ function sendToGalaxy() {
   if (checkedLinks.length > 0) {
     chrome.runtime.getBackgroundPage( 
       function (backgroundPage) { 
-        //backgroundPage.sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name);
         backgroundPage.sendToGalaxy(galaxy_url, api_key, checkedLinks, collection_name);
       } 
     );
@@ -148,6 +147,15 @@ function collectionHandler() {
   }
 }
 
+function autofill(galaxy_url, api_key) {
+  if (galaxy_url === undefined) galaxy_url = "";
+  if (api_key === undefined) api_key = "";
+  console.log(galaxy_url);
+  console.log(api_key);
+  $('#galaxy').val(galaxy_url);
+  $('#api_key').val(api_key);
+}
+
 // Set up event handlers and inject send_links.js into all frames in the active tab.
 window.onload = function() {
   document.getElementById('filter').onkeyup = filterLinks;
@@ -164,4 +172,11 @@ window.onload = function() {
       chrome.tabs.executeScript(activeTabs[0].id, {file: 'send_links.js', allFrames: true});
     });
   });
+
+  // autofill galaxu_url and api_key
+  chrome.runtime.getBackgroundPage( 
+    function (backgroundPage) {
+      backgroundPage.autofill();
+    } 
+  );
 };

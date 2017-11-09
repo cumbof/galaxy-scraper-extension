@@ -5,6 +5,7 @@
 /** Observer Pattern */
 /************************************************************************************/
 var _GALAXY_URL_ = undefined;
+var _API_KEY_ = undefined;
 var _HISTORY_ID_ = undefined;
 var _COLLECTION_NAME_ = undefined;
 var _MAP_SIZE_ = undefined;
@@ -27,8 +28,17 @@ ObservableMap.prototype.setSize = function( size ) {
 var file_ids = new ObservableMap();
 /************************************************************************************/
 
+function autofill() {
+   var popups = chrome.extension.getViews({type: "popup"});
+   console.log(popups);
+   if (popups.length > 0) {
+       popups[0].autofill(_GALAXY_URL_, _API_KEY_);
+   }
+}
+
 function resetGlobalVariables() {
     _GALAXY_URL_ = undefined;
+    _API_KEY_ = undefined;
     _HISTORY_ID_ = undefined;
     _COLLECTION_NAME_ = undefined;
     _MAP_SIZE_ = undefined;
@@ -41,6 +51,7 @@ function sendToGalaxy(galaxy_url, api_key, checkedLinks, collection_name) {
     resetGlobalVariables();
 
     _GALAXY_URL_ = galaxy_url;
+    _API_KEY_ = api_key;
     _COLLECTION_NAME_ = collection_name;
     // TO-DO remove invalid links in checkedLinks
     file_ids.setSize(checkedLinks.length);
