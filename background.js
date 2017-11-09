@@ -135,6 +135,7 @@ function uploadData(galaxy_url, api_key, history_id, checkedLinks) {
                 var file_id = outputs_arr[i]["id"];
                 var file_name = outputs_arr[i]["name"];
                 //file_ids[file_id] = file_name;
+                console.log("id: "+file_id+" - name: "+file_name);
                 file_ids.put(file_id, file_name);
                 //console.log("file_ids:"+Object.keys(file_ids).length);
             }
