@@ -126,7 +126,7 @@ function sendToGalaxy() {
   }
   else console.log("Select at least one link.");
   
-  //window.close();
+  window.close();
 }
 
 function collectionHandler() {
