@@ -1,35 +1,85 @@
 <!DOCTYPE html>
-<!-- Download Selected Links sample customization for Galaxy -->
+<!-- 'Download Selected Links' sample customization for Galaxy -->
 <!-- https://developer.chrome.com/extensions/samples -->
+<!-- Bootstrap for Chrome Extensions -->
+<!-- https://github.com/Ehesp/Chrome-Extension-Twitter-Bootstrap-3-Template -->
 <html>
   <head>
-    <script src="jquery-3.2.1.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="description" content="Web Scraper for Galaxy">
+    <meta name="author" content="Fabio Cumbo">
+    <title>Galaxy Scraper</title>
+    <!-- Loading jQuery -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <!-- Loading Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Loading other resources -->
     <script src="popup.js"></script>
+    <!-- Cascading Style Sheets -->
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="css/custom.css" rel="stylesheet" media="screen">
   </head>
   <body>
-    <h2>Galaxy Data Retrieval Extension</h2>
-    <p>You need an account and a valid <b>API Key</b> on the selected galaxy instance to properly use this tool.</p></br>
-    <input type="text" id="galaxy" style="width:90%" placeholder="Galaxy URL"></br>
-    </br>
-    <!--<input type="text" id="user" placeholder="Your Galaxy Username">
-    <input type="password" id="password" placeholder="Your Galaxy Password"></br>-->
-    <input type="text" id="api_key" style="width:90%" placeholder="API Key"></br>
-    </br>
-    <input type="radio" name="collection" id="coll_false" value="false" checked> Upload the selected data directly in your history</br>
-    <input type="radio" name="collection" id="coll_true" value="true"> Upload the selected data in a Collection that will be created in your history</br>
-    <input type="text" id="collection_name" placeholder="Collection Name" disabled> <b><label id="collection_status">[disabled]</label></b></br>
-    </br>
-    <input type="text" id="filter" placeholder="Filter Data">
-    <input type="checkbox" id="regex">
-    <label for="regex">Regex</label></br>
-    </br>
-    <button id="send0">Send Data</button>
-    <table id="links">
-      <tr>
-        <th><input type="checkbox" checked id="toggle_all"></th>
-        <th align="left">Select All</th>
-      </tr>
-    </table>
-    <button id="send1">Send Data</button>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <div class="navbar-brand">Galaxy Scraper</div>
+      </div>
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav" style="float:right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://galaxyproject.org/" target="_blank">GalaxyProject</a></li>
+              <li><a href="https://github.com/fabio-cumbo/galaxy-scraper-extension" target="_blank">GitHub</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <section>
+      <div type="button" class="btn btn-warning" style="width:100%">
+          You need a valid Galaxy API Key to properly use this tool</br>
+          <a href="https://galaxyproject.org/develop/api/" target="_blank" style="color:black">https://galaxyproject.org/develop/api/</a>
+      </div>
+      </br></br>
+
+      <input type="text" id="galaxy" class="form-control" placeholder="Galaxy URL">
+      <!--<input type="text" id="user" placeholder="Your Galaxy Username">
+      <input type="password" id="password" placeholder="Your Galaxy Password"></br>-->
+      <input type="text" id="api_key" class="form-control" placeholder="API Key"></br>
+
+      <div class="radio">
+        <label><input type="radio" name="collection" id="coll_false" value="false" checked> Upload the selected data directly in your history</label>
+      </div>
+      <div class="radio">
+        <label><input type="radio" name="collection" id="coll_true" value="true"> Upload the selected data in a Collection that will be created in your history</label>
+      </div>
+      
+      <input type="text" id="collection_name" class="form-control" placeholder="Collection Name" disabled> 
+      <!--<b><label id="collection_status">[disabled]</label></b></br>-->
+      
+      </br>
+      <div id="link_section">
+        <input type="text" id="filter" class="form-control"placeholder="Filter Data">
+        <div class="checkbox">
+          <label for="regex"><input type="checkbox" id="regex"> Regex</label>
+        </div>
+      
+        </br>
+        <button type="button" id="send0" class="btn btn-primary btn-sm" style="width:100%">Send Data</button>
+        <div class="table-responsive">
+          <table class="table table-condensed table-hover" id="links">
+            <tr>
+              <th><input type="checkbox" checked id="toggle_all"></th>
+              <th align="left">Select All</th>
+            </tr>
+          </table>
+        </div>
+        <button type="button" id="send1" class="btn btn-primary btn-sm" style="width:100%">Send Data</button>
+      </div>
+    </section>
+
   </body>
 </html>

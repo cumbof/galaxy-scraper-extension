@@ -1,4 +1,4 @@
-# Galaxy Data Retrieval Extension
+# Galaxy Scraper Extension
 Chrome extension that exploits the Galaxy APIs to automatically send data to the current history of your Galaxy instance.
 
 ### Scenario

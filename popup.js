@@ -78,12 +78,17 @@ function filterLinks() {
 // injected into all frames of the active tab, so this listener may be called
 // multiple times.
 chrome.extension.onRequest.addListener(function(links) {
-  for (var index in links) {
-    allLinks.push(links[index]);
+  if (links.length > 0) {
+    for (var index in links) {
+      allLinks.push(links[index]);
+    }
+    allLinks.sort();
+    visibleLinks = allLinks;
+    showLinks();
   }
-  allLinks.sort();
-  visibleLinks = allLinks;
-  showLinks();
+  else {
+    $("#link_section").hide();
+  }
 });
 
 function getSelectedLinks(visibleLinks) {
@@ -130,12 +135,12 @@ function collectionHandler() {
   if (collection_bool == "true") {
     console.log("collection activated");
     $("#collection_name").prop("disabled", false);
-    $("#collection_status").text("[enabled]");
+    //$("#collection_status").text("[enabled]");
   }
   else if (collection_bool == "false") {
     console.log("collection disabled");
     $("#collection_name").prop("disabled", true);
-    $("#collection_status").text("[disabled]");
+    //$("#collection_status").text("[disabled]");
   }
 }
 
