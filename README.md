@@ -10,7 +10,7 @@ If you want to import in your galaxy history a set of public available data, you
 The solution number 2 is definitely better than the number 1 because you do not have to download any data, but if you want to import a lot of data in your Galaxy history, it could take a lot of time to be achieved.
 
 ### Solution
-This Chrome extension makes you able to search for every links on the current web page (containing the links to the data that you want to import in Galaxy), filter these links (also using regular expressions), and send them to Galaxy by specifying the address in which Galaxy is running, your username, and password, as you can see on the following figure.
+This Chrome extension makes you able to search for every links on the current web page (containing the links to the data that you want to import in Galaxy), filter these links (also using regular expressions), and send them to Galaxy by specifying the address in which Galaxy is running, and an API Key and password, as shown on the following figure.
 
 > ![Galaxy Data Retrieval Extension](https://raw.githubusercontent.com/fabio-cumbo/galaxy-data-retrieval-extension/master/img/gdre-screenshot.png "Galaxy Data Retrieval Extension")
 
