@@ -39,29 +39,29 @@
     </nav>
 
     <section>
-      <div type="button" class="btn btn-warning" style="width:100%">
-          You need a valid Galaxy API Key to properly use this tool</br>
-          <a href="https://galaxyproject.org/develop/api/" target="_blank" style="color:black">https://galaxyproject.org/develop/api/</a>
-      </div>
-      </br></br>
+      <div id="content_section">
+        <div type="button" class="btn btn-warning" style="width:100%">
+            You need a valid Galaxy API Key to properly use this tool</br>
+            <a href="https://galaxyproject.org/develop/api/" target="_blank" style="color:black">https://galaxyproject.org/develop/api/</a>
+        </div>
+        </br></br>
 
-      <input type="text" id="galaxy" class="form-control" placeholder="Galaxy URL">
-      <!--<input type="text" id="user" placeholder="Your Galaxy Username">
-      <input type="password" id="password" placeholder="Your Galaxy Password"></br>-->
-      <input type="text" id="api_key" class="form-control" placeholder="API Key"></br>
+        <input type="text" id="galaxy" class="form-control" placeholder="Galaxy URL">
+        <!--<input type="text" id="user" placeholder="Your Galaxy Username">
+        <input type="password" id="password" placeholder="Your Galaxy Password"></br>-->
+        <input type="text" id="api_key" class="form-control" placeholder="API Key"></br>
 
-      <div class="radio">
-        <label><input type="radio" name="collection" id="coll_false" value="false" checked> Upload the selected data directly in your history</label>
-      </div>
-      <div class="radio">
-        <label><input type="radio" name="collection" id="coll_true" value="true"> Upload the selected data in a Collection that will be created in your history</label>
-      </div>
-      
-      <input type="text" id="collection_name" class="form-control" placeholder="Collection Name" disabled> 
-      <!--<b><label id="collection_status">[disabled]</label></b></br>-->
-      
-      </br>
-      <div id="link_section">
+        <div class="radio">
+          <label><input type="radio" name="collection" id="coll_false" value="false" checked> Upload the selected data directly in your history</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="collection" id="coll_true" value="true"> Upload the selected data in a Collection that will be created in your history</label>
+        </div>
+        
+        <input type="text" id="collection_name" class="form-control" placeholder="Collection Name" disabled> 
+        <!--<b><label id="collection_status">[disabled]</label></b></br>-->
+        
+        </br>
         <input type="text" id="filter" class="form-control"placeholder="Filter Data">
         <div class="checkbox">
           <label for="regex"><input type="checkbox" id="regex"> Regex</label>
@@ -69,6 +69,13 @@
       
         </br>
         <button type="button" id="send0" class="btn btn-primary btn-sm" style="width:100%">Send Data</button>
+        </br>
+        <div id="nodata" style="display:none">
+          </br>
+          <div type="button" class="btn btn-danger" style="width:100%">
+              You have to select at least one link
+          </div>
+        </div>        
         </br></br>
         <div style="max-height: 200px; overflow: auto;">
           <table class="table table-condensed table-hover table-responsive" id="links">

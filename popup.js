@@ -87,7 +87,8 @@ chrome.extension.onRequest.addListener(function(links) {
     showLinks();
   }
   else {
-    $("#link_section").hide();
+    $("#content_section").empty();
+    $("#content_section").append("<div type=\"button\" class=\"btn btn-warning\" style=\"width:100%\">No links found on this page</div>");
   }
 });
 
@@ -123,10 +124,13 @@ function sendToGalaxy() {
         backgroundPage.sendToGalaxy(galaxy_url, api_key, checkedLinks, collection_name);
       } 
     );
+    window.close();
   }
-  else console.log("Select at least one link.");
+  else {
+    console.log("Select at least one link.");
+    $("#nodata").show();
+  }
   
-  window.close();
 }
 
 function collectionHandler() {

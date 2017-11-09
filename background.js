@@ -27,9 +27,19 @@ ObservableMap.prototype.setSize = function( size ) {
 var file_ids = new ObservableMap();
 /************************************************************************************/
 
+function resetGlobalVariables() {
+    _GALAXY_URL_ = undefined;
+    _HISTORY_ID_ = undefined;
+    _COLLECTION_NAME_ = undefined;
+    _MAP_SIZE_ = undefined;
+    file_ids = new ObservableMap();
+}
+
 // Send selected data to Galaxy.
 //function sendToGalaxy(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name) {
 function sendToGalaxy(galaxy_url, api_key, checkedLinks, collection_name) {
+    resetGlobalVariables();
+
     _GALAXY_URL_ = galaxy_url;
     _COLLECTION_NAME_ = collection_name;
     // TO-DO remove invalid links in checkedLinks
