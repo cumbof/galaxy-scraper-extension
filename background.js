@@ -165,7 +165,8 @@ function createCollection(galaxy_url, history_id, collection_name, file_ids) {
                     "type": "dataset_collection",
                     "collection_type": "list",
                     "name": collection_name,
-                    "element_identifiers": element_identifiers
+                    "element_identifiers": element_identifiers,
+                    "hide_source_items": true
                 }
             ),
             success: function( data, textStatus, jQxhr ){
