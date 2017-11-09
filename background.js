@@ -41,7 +41,7 @@ function sendToGalaxy(galaxy_url, api_key, checkedLinks, collection_name) {
     getCurrentHistoryId(galaxy_url, api_key, checkedLinks, collection_name);
 }
 
-function retrieveApiKey(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name) {
+/*function retrieveApiKey(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, collection_name) {
     var path = "api/authenticate/baseauth";
     if (!galaxy_url.endsWith("/"))
         path = "/"+path;
@@ -63,7 +63,7 @@ function retrieveApiKey(galaxy_url, galaxy_user, galaxy_pass, checkedLinks, coll
             return undefined;
         }
     });
-}
+}*/
 
 function getCurrentHistoryId(galaxy_url, api_key, checkedLinks, collection_name) {
     var path = "api/histories/most_recently_used";
@@ -82,16 +82,7 @@ function getCurrentHistoryId(galaxy_url, api_key, checkedLinks, collection_name)
             console.log("history_id: "+data["id"]);
             var history_id = data["id"];
             _HISTORY_ID_ = history_id;
-            //return data["id"];
-            for (var i=0; i<checkedLinks.length; i++) {
-                // send data to galaxy
-                var file_url = checkedLinks[i];
-                console.log("file_url: "+file_url);
-                var file_name = file_url.split("/").pop();
-                var file_type = "auto";
-                var dbkey = "?";
-                uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_type, dbkey);
-            }
+            uploadData(galaxy_url, api_key, history_id, checkedLinks);
         },
         error: function( jqXhr, textStatus, errorThrown ){
             return undefined;
@@ -99,11 +90,25 @@ function getCurrentHistoryId(galaxy_url, api_key, checkedLinks, collection_name)
     });
 }
 
-function uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_type, dbkey) {
+//function uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_type, dbkey) {
+function uploadData(galaxy_url, api_key, history_id, checkedLinks) {
     var path = "api/tools";
     if (!galaxy_url.endsWith("/"))
         path = "/"+path;
     var upload_url = galaxy_url+path;
+
+    var file_type = "auto";
+    var dbkey = "?";
+
+    var files_0_names = "";
+    var files_0_type = "";
+    var files_0_url_paste = "";
+    for (var i=0; i<checkedLinks.length; i++) {
+        // send data to galaxy
+        var file_url = checkedLinks[i];
+        console.log("file_url: "+file_url);
+        files_0_url_paste += "\n" + file_url;
+    }
 
     $.ajax({
         url: upload_url,
@@ -116,22 +121,23 @@ function uploadData(galaxy_url, api_key, history_id, file_name, file_url, file_t
                 "tool_id": "upload1", 
                 "history_id": history_id, 
                 "inputs": {
-                    "files_0|NAME": file_name, 
-                    "files_0|type": file_type, 
-                    "files_0|url_paste": file_url, 
+                    "files_0|url_paste": files_0_url_paste, 
                     "dbkey": dbkey, 
                     "file_type": file_type
                 } 
             } 
         ),
         success: function( data, textStatus, jQxhr ){
-            //console.log(data);
+            console.log(data);
             //return data;
-            //return data["outputs"][0]["id"];
-            var file_id = data["outputs"][0]["id"];
-            //file_ids[file_id] = file_name;
-            file_ids.put(file_id, file_name);
-            //console.log("file_ids:"+Object.keys(file_ids).length);
+            var outputs_arr = data["outputs"];
+            for (var i=0; i<outputs_arr.length; i++) {
+                var file_id = outputs_arr[i]["id"];
+                var file_name = outputs_arr[i]["name"];
+                //file_ids[file_id] = file_name;
+                file_ids.put(file_id, file_name);
+                //console.log("file_ids:"+Object.keys(file_ids).length);
+            }
         },
         error: function( jqXhr, textStatus, errorThrown ){
             return undefined;
