@@ -78,6 +78,7 @@ function filterLinks() {
 // injected into all frames of the active tab, so this listener may be called
 // multiple times.
 chrome.extension.onRequest.addListener(function(links) {
+  //console.log("links: "+links.length);
   if (links.length > 0) {
     for (var index in links) {
       allLinks.push(links[index]);
