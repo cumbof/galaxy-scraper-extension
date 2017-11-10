@@ -2,6 +2,7 @@
   "name": "Galaxy Scraper Extension",
   "description": "Select links on a page and send data directly to your Galaxy history.",
   "version": "0.1",
+  "homepage_url": "https://github.com/fabio-cumbo/galaxy-scraper-extension",
   "minimum_chrome_version": "16.0.884",
   "permissions": ["<all_urls>"],
   "background": {
